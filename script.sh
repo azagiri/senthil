@@ -36,7 +36,13 @@ oc get deployment voyager -o yaml > voyager.yaml
 oc delete deployment voyager
 oc create -f voyager.yaml
 
-oc new-project atlas
-oc create deployment mercury --image quay.io/redhattraining/hello-world-nginx:v1.0 --dry-run=client -o yaml > mercury.yaml
+
+#oc create deployment mercury --image quay.io/redhattraining/hello-world-nginx:v1.0 --dry-run=client -o yaml > mercury.yaml
 #oc expose svc mercury
+oc new-project atlas
+oc create deployment mercury --image quay.io/redhattraining/hello-world-nginx:v1.0
+oc expose svc mercury
+oc set resources --requests memory=80Gi deployment mercury
+oc scale --replicas=0 deployment mercury
+oc scale --replicas=1 deployment mercury
 echo "completed"
